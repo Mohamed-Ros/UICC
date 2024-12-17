@@ -9,6 +9,8 @@
     <meta name="keywords" content="BTU  , UICC , Kora ">
     <link rel="icon" type="image/x-icon" href="img/favicon.ico">
     <meta name="description" content="We Are Uicc Center And We Are At BTU ">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 
@@ -232,29 +234,29 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-7 wow fadeInUp" data-wow-delay="0.3s">
                         <p class="text-center mb-4"> For This Form If You Agree First Need to Be Good STudent , Never Comes Course Late  Already Come To The Courses And Workshops</p>
-                     <form>
+<form id="data-form">
     <div class="row g-3">
         <div class="col-md-6">
             <div class="form-floating">
-                <input type="text" class="form-control" id="name" name="name" placeholder="Your Full Name">
+                <input type="text" class="form-control" id="name" name="name" placeholder="Your Full Name" required>
                 <label for="name">Your Full Name</label>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating">
-                <input type="text" class="form-control" id="email" name="email" placeholder="Your ID Number">
+                <input type="text" class="form-control" id="email" name="email" placeholder="Your ID Number" required>
                 <label for="email">Your ID Number</label>
             </div>
         </div>
         <div class="col-12">
             <div class="form-floating">
-                <input type="text" class="form-control" id="subject" name="subject" placeholder="Your WhatsApp Number">
+                <input type="text" class="form-control" id="subject" name="subject" placeholder="Your WhatsApp Number" required>
                 <label for="subject">Your WhatsApp Number</label>
             </div>
         </div>
         <div class="col-12">
             <div class="form-floating">
-                <input type="text" class="form-control" id="national-id" name="national-id" placeholder="ID National">
+                <input type="text" class="form-control" id="national-id" name="national-id" placeholder="ID National" required>
                 <label for="national-id">ID National</label>
             </div>
         </div>
@@ -311,6 +313,61 @@
             document.getElementById("4").scrollIntoView({ behavior: "smooth" });  // الانتقال إلى السكشن الثاني مع التمرير السلس
         });
     </script>
+
+<script>
+    document.getElementById("data-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // Get form data
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+
+        // Google Apps Script Web App URL
+        const url = "https://script.google.com/macros/s/AKfycbwHXOzhUElwOz8YK2LVf4vYziMpQgbAPtvSOTjGRV2Nsjv15CAG8j-qpCnM-VR3IxcjRg/exec";
+
+        // Show a loading alert
+        Swal.fire({
+            title: "Sending...",
+            text: "Please wait while your data is being sent.",
+            icon: "info",
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        // Submit data using fetch
+        fetch(url, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams(data),
+        })
+        .then(() => {
+            // Success alert
+            Swal.fire({
+                title: "Success!",
+                text: "Your data has been submitted successfully.",
+                icon: "success",
+                confirmButtonText: "OK"
+            });
+            e.target.reset(); // Reset form after submission
+        })
+        .catch((error) => {
+            // Error alert
+            Swal.fire({
+                title: "Error!",
+                text: "Something went wrong. Please try again.",
+                icon: "error",
+                confirmButtonText: "Retry"
+            });
+            console.error("Error:", error);
+        });
+    });
+</script>
+
+    
 </body>
 
 </html>
